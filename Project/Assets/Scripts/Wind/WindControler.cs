@@ -5,20 +5,37 @@ using UnityEngine;
 
 public class WindControler : MonoBehaviour {
 
-    AnimationCurve _strenghtCurve;
+    [Header("Wind Properties")]
+    public AnimationCurve _strenghtCurve;
     public float _timeBetweenWave;
     public float _timeWave;
 
-    public float _windStrength;
+    public float _windMaxStrength;
 
+
+
+    [Header("Wind Status")]
+    private Vector3 _windDirection;
     private float _timeStamp;
-
     private bool _waiting;
     public bool _start;
+
+    private Vector3 _windBlowing;
+
+    public List<Rigidbody> _canBeBlowed;
+
     // Use this for initialization
     void Start() {
+        _canBeBlowed = new List<Rigidbody>();
 
-    }
+        int layerAffectess = LayerMask.NameToLayer("Affectees");
+        var allRigidbody = FindObjectsOfType<Rigidbody>();
+        for (int i = allRigidbody.Length- 1; i >= 0; --i)
+        {
+            if (allRigidbody[i].gameObject.layer == layerAffectess)
+                _canBeBlowed.Add(allRigidbody[i]);
+        }
+    } // Start
 
     // Update is called once per frame
     void Update() {
@@ -46,7 +63,13 @@ public class WindControler : MonoBehaviour {
 
     private void updateBlowing()
     {
-        if(_timeStamp > _timeWave) {
+        _windBlowing = _windMaxStrength * _windDirection;
+        for (int i = _canBeBlowed.Count - 1; i >= 0; i--)
+        {
+            _canBeBlowed[i].AddForce(_windBlowing);
+        }
+
+        if (_timeStamp > _timeWave) {
             changeToWaiting();
         }
     } // updateBlowing
@@ -55,7 +78,10 @@ public class WindControler : MonoBehaviour {
     {
         _timeStamp = 0;
         _waiting = false;
-        Debug.Log("blowing");
+
+        _windDirection = Vector3.one * (UnityEngine.Random.value > 0.5? -1: 1);
+
+        Debug.Log("blowing to "+(_windDirection.x >= 1?"right":"left"));
     } // changeToBlowing
 
     private void changeToWaiting()

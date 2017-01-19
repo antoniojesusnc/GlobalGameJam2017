@@ -20,7 +20,7 @@ public class PlayerControl : MonoBehaviour
         float inputX    = Input.GetAxisRaw("Horizontal") * Time.deltaTime * speed;
         bool  inputJump = Input.GetButtonDown("Jump");
 
-        transform.Translate(inputX, 0, 0);
+        transform.Translate(inputX, 0, 0,Space.World);
 
         if (inputJump)
         {
