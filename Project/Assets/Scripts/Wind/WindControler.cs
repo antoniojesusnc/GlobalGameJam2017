@@ -6,18 +6,12 @@ using UnityEngine;
 public class WindControler : MonoBehaviour {
 
     [Header("Wind Properties")]
-    public AnimationCurve _strenghtCurve;
-    public float _timeBetweenWave;
-    public float _timeWave;
-
-    public float _windMaxStrength;
-
-
+    public WindProperties _windProperties;
 
     [Header("Wind Status")]
     private Vector3 _windDirection;
     private float _timeStamp;
-    private bool _waiting;
+    private bool _waiting = true;
     public bool _start;
 
     private Vector3 _windBlowing;
@@ -55,7 +49,7 @@ public class WindControler : MonoBehaviour {
 
     private void updateWaiting()
     {
-        if (_timeStamp > _timeBetweenWave)
+        if (_timeStamp > _windProperties.timeBetweenWaves)
         {
             changeToBlowing();
         }
@@ -63,13 +57,16 @@ public class WindControler : MonoBehaviour {
 
     private void updateBlowing()
     {
-        _windBlowing = _windMaxStrength * _windDirection;
+        _windBlowing = _windProperties.maxStrength * _windDirection;
+        _windBlowing *= _windProperties.strenghtCurve.Evaluate(_timeStamp / _windProperties.timeBlowing);
+
         for (int i = _canBeBlowed.Count - 1; i >= 0; i--)
         {
+
             _canBeBlowed[i].AddForce(_windBlowing);
         }
 
-        if (_timeStamp > _timeWave) {
+        if (_timeStamp > _windProperties.timeBlowing) {
             changeToWaiting();
         }
     } // updateBlowing

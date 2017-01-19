@@ -51,14 +51,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed212176012088340b838d12610d889c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _strenghtCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _timeBetweenWave: 2
-  _timeWave: 3
-  _windMaxStrength: 0
+  _windProperties: {fileID: 11400000, guid: 2fec93a227afeb04ab6378ee54e02276, type: 2}
   _start: 1
   _canBeBlowed: []
