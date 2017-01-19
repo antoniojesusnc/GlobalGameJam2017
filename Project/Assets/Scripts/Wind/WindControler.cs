@@ -16,18 +16,18 @@ public class WindControler : MonoBehaviour {
 
     private Vector3 _windBlowing;
 
-    public List<Rigidbody> _canBeBlowed;
+    public List<WindAffected> _canBeBlowed;
 
     // Use this for initialization
     void Start() {
-        _canBeBlowed = new List<Rigidbody>();
+        _canBeBlowed = new List<WindAffected>();
 
         int layerAffectess = LayerMask.NameToLayer("Affectees");
-        var allRigidbody = FindObjectsOfType<Rigidbody>();
-        for (int i = allRigidbody.Length- 1; i >= 0; --i)
+        var allAffectessObjs = FindObjectsOfType<WindAffected>();
+        for (int i = allAffectessObjs.Length- 1; i >= 0; --i)
         {
-            if (allRigidbody[i].gameObject.layer == layerAffectess)
-                _canBeBlowed.Add(allRigidbody[i]);
+            if (allAffectessObjs[i].gameObject.layer == layerAffectess)
+                _canBeBlowed.Add(allAffectessObjs[i]);
         }
     } // Start
 
@@ -39,23 +39,23 @@ public class WindControler : MonoBehaviour {
         _timeStamp += Time.deltaTime;
         if (_waiting)
         {
-            updateWaiting();
+            UpdateWaiting();
         }
         else
         {
-            updateBlowing();
+            UpdateBlowing();
         }
     } // Update
 
-    private void updateWaiting()
+    private void UpdateWaiting()
     {
         if (_timeStamp > _windProperties.timeBetweenWaves)
         {
-            changeToBlowing();
+            ChangeToBlowing();
         }
     } // updateWaiting
 
-    private void updateBlowing()
+    private void UpdateBlowing()
     {
         _windBlowing = _windProperties.maxStrength * _windDirection;
         _windBlowing *= _windProperties.strenghtCurve.Evaluate(_timeStamp / _windProperties.timeBlowing);
@@ -67,11 +67,11 @@ public class WindControler : MonoBehaviour {
         }
 
         if (_timeStamp > _windProperties.timeBlowing) {
-            changeToWaiting();
+            ChangeToWaiting();
         }
     } // updateBlowing
 
-    private void changeToBlowing()
+    private void ChangeToBlowing()
     {
         _timeStamp = 0;
         _waiting = false;
@@ -81,7 +81,7 @@ public class WindControler : MonoBehaviour {
         Debug.Log("blowing to "+(_windDirection.x >= 1?"right":"left"));
     } // changeToBlowing
 
-    private void changeToWaiting()
+    private void ChangeToWaiting()
     {
         _timeStamp = 0;
         _waiting = true;

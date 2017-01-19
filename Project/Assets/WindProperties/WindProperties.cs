@@ -3,7 +3,6 @@ using UnityEditor;
 
 
 [CreateAssetMenu(menuName = "Wind/New Wind Properties")]
-[System.Serializable]
 public class WindProperties : ScriptableObject {
 
     [Header("Normal Properties")]
