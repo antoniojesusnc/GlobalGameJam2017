@@ -8,6 +8,7 @@ Platform PC / Mac / Linux
 - Wind
 - Particles
 - Player Controls
+- Camera
 - Game-over logic
 - UI
 - Visual Feedback
