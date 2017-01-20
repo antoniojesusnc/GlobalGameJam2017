@@ -4,28 +4,32 @@ using UnityEngine;
 
 public class PlayerControl : MonoBehaviour 
 {
-    public float speed;
-    public float tmp;
+    public float speed = 6.0F;
+    public float jumpSpeed = 8.0F;
+    public float gravity = 20.0F;
 
-    Rigidbody rigid;
+    private Vector3 moveDirection = Vector3.zero;
 
-    void Start () 
+    CharacterController controller;
+
+    void Start() 
     {
-        rigid = GetComponent<Rigidbody>();
+        controller = GetComponent<CharacterController>();
     }
 
-	// Update is called once per frame
-	void Update () 
+    void Update() 
     {
-        float inputX    = Input.GetAxisRaw("Horizontal") * Time.deltaTime * speed;
-        bool  inputJump = Input.GetButtonDown("Jump");
-
-        transform.Translate(inputX, 0, 0,Space.World);
-
-        if (inputJump)
+        if (controller.isGrounded) 
         {
-            rigid. AddRelativeForce(Vector3.up * tmp);
-        }
-	}
+            moveDirection = Vector3.right * Input.GetAxis("Horizontal");
+            moveDirection = transform.TransformDirection(moveDirection) * speed;
 
+            if (Input.GetButton("Jump"))
+            {
+                moveDirection.y = jumpSpeed;
+            }
+        }
+        moveDirection.y -= gravity * Time.deltaTime;
+        controller.Move(moveDirection * Time.deltaTime);
+    }
 }

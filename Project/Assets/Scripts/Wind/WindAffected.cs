@@ -29,6 +29,15 @@ public class WindAffected : MonoBehaviour {
         if (directionalForce.x < 0 && !_hideInLeft || directionalForce.x > 0 && !_hideInRight)
         {
             _rigidbody.AddForce(directionalForce);
+
+            if (gameObject.CompareTag("Player"))
+            {
+                CharacterController controller = GetComponent<CharacterController>();
+
+                controller.Move(Vector3.right * directionalForce.x);
+            }
         }
+
+
     } // AddForce
 }
